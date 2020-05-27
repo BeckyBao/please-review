@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <header class="header">注册头部</header>
+    <header class="header">请你评</header>
     <div class="content">
       <van-field
           v-model="tel"
@@ -61,7 +61,9 @@ export default {
   },
   methods: {
       toRegister () {
-          this.$router.replace('/register')
+          this.$router.replace({
+              path:'/register'
+          })
       },
       login () {
           if (this.tel === '' || this.usertel === '手机号码格式错误') {
@@ -81,7 +83,7 @@ export default {
       reallR () {
           this.zhud=true
           this.loading=true
-          axios.post('https://www.daxunxun.com/users/login', {
+          axios.post('/login.json', {
               username: this.tel,
               password: this.password
           }).then(res=>{

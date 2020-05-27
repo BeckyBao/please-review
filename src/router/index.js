@@ -30,10 +30,10 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    if(to.name == 'login'){  //如果要去的页面是登录页面，就进行下一步，不做判断
+    if(to.name == 'login' || to.name == 'register'){  //如果要去的页面是登录或祖册页面，就进行下一步，不做判断
         next()
     }else{
-        if(localStorage.getItem('isLogin')==='ok'){
+        if(localStorage.getItem('isLogin')==='ok' ){
             next()
         }else{
             next('/login')

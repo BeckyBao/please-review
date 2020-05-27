@@ -1,45 +1,52 @@
 <template>
-  <div class="container">
-      <header class="header">注册</header>
-      <div class="content">
-          <van-field
-                  v-model="username"
-                  placeholder="请输入手机号"
-                  clearable
-                  :error-message="usernamemsg"
-          />
-          <van-field
-                  v-model="password"
-                  type="password"
-                  clearable
-                  placeholder="请输入密码"
-                  error-message="密码格式错误"
-          />
-          <van-field
-                  v-model="code"
-                  center
-                  clearable
-                  placeholder="请输入短信验证码"
-                  error-message="验证码格式错误"
-          >
-              <van-button slot="button" size="small" type="primary">发送验证码</van-button>
-          </van-field>
-      </div>
-  </div>
-</template>
+    <div class="container">
+        <header class="header">请你评</header>
+        <div class="content">
+            <van-field
+                    v-model="tel"
+                    placeholder="请输入手机号"
+                    :error-message="usertel"
 
+                    clearable
+            />
+            <van-field
+                    v-model="password"
+                    type="password"
+                    placeholder="请输入密码"
+                    :error-message="pass"
+
+                    clearable
+            />
+            <van-field
+                    v-model="sms"
+                    center
+                    clearable
+                    placeholder="请输入短信验证码"
+                    :error-message="test"
+            >
+                <van-button :disabled="flag" slot="button" size="small" type="primary" @click="sendCode">{{ buttonmsg }}</van-button>
+
+            </van-field>
+            <van-button type="primary" :loading="loading" loading-text="注册..." size="large" :disabled="zhud" @click="register">注册</van-button>
+            <van-divider @click="toLogin">去登录</van-divider>
+        </div>
+    </div>
+</template>
 <script>
     import Vue from 'vue'
-    import { Field, Button } from 'vant'
+    import { Field, Button,Toast } from 'vant'
     import axios from 'axios'
     Vue.use(Field)
     Vue.use(Button)
+    Vue.use(Toast)
     export default {
         name: "Register.vue",
         data () {
             return {
                 tel:'',
                 password:'',
+                username: '',
+
                 sms:'',
                 buttonmsg:'点击发送验证码',
                 flag:false,
@@ -55,6 +62,15 @@
                 }else if(!/^[1][3,4,5,7,8][0-9]{9}$/.test(this.tel)){
                     return '手机号格式错误'
                 }else {
+                    return ''
+                }
+            },
+            usernamemsg () {
+                if (this.username === '') {
+                    return ''
+                } else if (!/^[1][3,4,5,7,8][0-9]{9}$/.test(this.username)) {
+                    return '手机号码格式错误'
+                } else {
                     return ''
                 }
             },
@@ -82,7 +98,7 @@
                 this.$router.replace('/login')
             },
             sendCode () {
-                let time = 4
+                let time = 30
                 let timer
                 timer = setInterval(()=>{
                     time --
@@ -100,31 +116,31 @@
             },
             getCode () {
                 if(!/^[1][3,4,5,7,8][0-9]{9}$/.test(this.tel) || this.tel===""){
-                    console.log('手机号码输入有误')
+                    Toast('手机号码输入有误')
                 }else{
                     axios.get('https://www.daxunxun.com/users/sendCode?tel='+this.tel).then(res=>{
                         if(res.data === 1){
-                            console.log('用户名已注册，请更改')
+                            Toast('手机号已注册，请更改')
                         }else if(res.data === 0){
-                            console.log('获取验证码失败')
+                            Toast('获取验证码失败')
                         }else{
                             this.adminCode = res.data.code
-                            console.log(this.adminCode)
+                            Toast(this.adminCode)
                         }
                     })
                 }
             },
             register () {
                 if (this.tel === '' || this.usertel === '手机号码格式错误') {
-                    console.log('手机号码输入有误')
+                    Toast('手机号码输入有误')
                     return
                 }
                 if (this.password === '' || this.pass === '密码格式错误，最少为6位') {
-                    console.log('密码输入有误')
+                    Toast('密码输入有误')
                     return
                 }
                 if (this.sms === '' || this.sms !== this.adminCode) {
-                    console.log('验证码输入有误')
+                    Toast('验证码输入有误')
                     return
                 }
                 this.reallR()
@@ -139,11 +155,11 @@
                     this.zhud=false
                     this.loading=false
                     if (res.data === 2) {
-                        console.log('用户名已注册，请直接登录')
+                        Toast('用户名已注册，请直接登录')
                     } else if (res.data === 0) {
-                        console.log('注册失败')
+                        Toast('注册失败')
                     } else {
-                        console.log('注册成功')
+                        Toast('注册成功')
                     }
                 })
             }
