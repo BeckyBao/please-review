@@ -1,6 +1,10 @@
 <template>
   <div class="container">
-    <header class="header">请你评</header>
+    <header class="header">
+      <div class="headDiv">
+        建行请你评
+      </div>
+    </header>
     <div class="content">
       <van-field
           v-model="tel"
@@ -15,7 +19,7 @@
           :error-message="pass"
           clearable
       />
-      <van-button type="primary" :loading="loading" loading-text="登录..." size="large" :disabled="zhud" @click="login">登录</van-button>
+      <van-button type="info" :loading="loading" loading-text="登录..." size="large" :disabled="zhud" @click="login">登录</van-button>
       <van-divider @click="toRegister">去注册</van-divider>
     </div>
   </div>
@@ -83,7 +87,7 @@ export default {
       reallR () {
           this.zhud=true
           this.loading=true
-          axios.post('/login.json', {
+          axios.post('/users/login', {
               username: this.tel,
               password: this.password
           }).then(res=>{
@@ -98,10 +102,26 @@ export default {
               } else {
                   Toast('登录成功')
                   localStorage.setItem('isLogin','ok') //登录标识
-                  this.$router.back()  //登陆成功返回上一页
+                  localStorage.setItem("tel",this.tel)// 存储当前登录人号码
+                  this.$router.replace({// 登录成功去首页
+                      path:'/homeIndex'
+                  })
               }
           })
       }
   }
 }
 </script>
+<style scoped>
+  .headDiv{
+    height: 80px;
+    background-color: #1E74E6;
+    color:white;
+    line-height:80px;
+    font-size: 30px;
+    font-weight: bold;
+  }
+  .content{
+    margin: 5%;
+  }
+</style>

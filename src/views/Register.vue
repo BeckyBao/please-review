@@ -1,6 +1,10 @@
 <template>
     <div class="container">
-        <header class="header">请你评</header>
+        <header class="header">
+            <div class="headDiv">
+                建行请你评
+            </div>
+        </header>
         <div class="content">
             <van-field
                     v-model="tel"
@@ -24,10 +28,10 @@
                     placeholder="请输入短信验证码"
                     :error-message="test"
             >
-                <van-button :disabled="flag" slot="button" size="small" type="primary" @click="sendCode">{{ buttonmsg }}</van-button>
+                <van-button :disabled="flag" slot="button" size="small" type="info" @click="sendCode">{{ buttonmsg }}</van-button>
 
             </van-field>
-            <van-button type="primary" :loading="loading" loading-text="注册..." size="large" :disabled="zhud" @click="register">注册</van-button>
+            <van-button type="info" :loading="loading" loading-text="注册..." size="large" :disabled="zhud" @click="register">注册</van-button>
             <van-divider @click="toLogin">去登录</van-divider>
         </div>
     </div>
@@ -148,7 +152,7 @@
             reallR () {
                 this.zhud=true
                 this.loading=true
-                axios.post('https://www.daxunxun.com/users/register', {
+                axios.post('/users/register', {
                     username: this.tel,
                     password: this.password
                 }).then(res=>{
@@ -168,5 +172,15 @@
 </script>
 
 <style scoped>
-
+    .headDiv{
+        height: 80px;
+        background-color: #1E74E6;
+        color:white;
+        line-height:80px;
+        font-size: 30px;
+        font-weight: 900;
+    }
+    .content{
+        margin: 5%;
+    }
 </style>
