@@ -18,18 +18,21 @@
                     type="password"
                     placeholder="请输入密码"
                     :error-message="pass"
-
                     clearable
             />
             <van-field
                     v-model="sms"
                     center
                     clearable
-                    placeholder="请输入短信验证码"
+                    placeholder="请输入验证码"
                     :error-message="test"
+                    style="display: inline-block;"
             >
-                <van-button :disabled="flag" slot="button" size="small" type="info" @click="sendCode">{{ buttonmsg }}</van-button>
-
+                <template #button>
+                    <div class="code" @click="refreshCode">
+                        <s-identify :identifyCode="identifyCode"></s-identify>
+                    </div>
+                </template>
             </van-field>
             <van-button type="info" :loading="loading" loading-text="注册..." size="large" :disabled="zhud" @click="register">注册</van-button>
             <van-divider @click="toLogin">去登录</van-divider>
@@ -40,17 +43,20 @@
     import Vue from 'vue'
     import { Field, Button,Toast } from 'vant'
     import axios from 'axios'
+    import SIdentify from '../components/identify'
     Vue.use(Field)
     Vue.use(Button)
     Vue.use(Toast)
     export default {
         name: "Register.vue",
+        components:{SIdentify},
         data () {
             return {
                 tel:'',
                 password:'',
                 username: '',
-
+                identifyCodes: "1234567890",
+                identifyCode: "",
                 sms:'',
                 buttonmsg:'点击发送验证码',
                 flag:false,
@@ -90,48 +96,33 @@
             test () {
                 if (this.sms === ""){
                     return ''
-                }else if(this.sms.length !== 5){
+                }else if(this.sms.length !== 4){
                     return '验证码格式错误'
                 }else {
                     return ''
                 }
             }
         },
+        mounted() {
+            this.identifyCode = "";
+            this.makeCode(this.identifyCodes, 4);
+        },
         methods: {
             toLogin () {
-                this.$router.replace('/login')
+                this.$router.replace('/')
             },
-            sendCode () {
-                let time = 30
-                let timer
-                timer = setInterval(()=>{
-                    time --
-                    if(time === 0){
-                        clearInterval(timer)
-                        this.flag=false
-                        this.buttonmsg = '点击发送验证码'
-                        return
-                    }
-                    this.flag = true
-                    this.buttonmsg = time + '秒后重新发送'
-
-                },1000)
-                this.getCode()
+            randomNum(min, max) {
+                return Math.floor(Math.random() * (max - min) + min);
             },
-            getCode () {
-                if(!/^[1][3,4,5,7,8][0-9]{9}$/.test(this.tel) || this.tel===""){
-                    Toast('手机号码输入有误')
-                }else{
-                    axios.get('https://www.daxunxun.com/users/sendCode?tel='+this.tel).then(res=>{
-                        if(res.data === 1){
-                            Toast('手机号已注册，请更改')
-                        }else if(res.data === 0){
-                            Toast('获取验证码失败')
-                        }else{
-                            this.adminCode = res.data.code
-                            Toast(this.adminCode)
-                        }
-                    })
+            refreshCode() {
+                this.identifyCode = "";
+                this.makeCode(this.identifyCodes, 4);
+            },
+            makeCode(o, l) {
+                for (let i = 0; i < l; i++) {
+                    this.identifyCode += this.identifyCodes[
+                        this.randomNum(0, this.identifyCodes.length)
+                        ];
                 }
             },
             register () {
@@ -143,7 +134,7 @@
                     Toast('密码输入有误')
                     return
                 }
-                if (this.sms === '' || this.sms !== this.adminCode) {
+                if (this.sms === '' || this.sms !== this.identifyCode) {
                     Toast('验证码输入有误')
                     return
                 }
@@ -182,5 +173,11 @@
     }
     .content{
         margin: 5%;
+    }
+    .code {
+        /*display: inline-block;*/
+        /*width: 100px;*/
+        /*height: 40px;*/
+        /*border: 1px solid #1E74E6;*/
     }
 </style>
