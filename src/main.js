@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import 'vant/lib/icon/local.css';
 import App from './App.vue'
 import router from './router'
 import store from './store'

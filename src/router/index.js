@@ -38,6 +38,22 @@ Vue.use(VueRouter)
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
           component: () => import(/* webpackChunkName: "about" */ '../views/ListDetail.vue')
+  },
+  {
+      path: '/received',
+      name: 'Received',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "about" */ '../views/Received.vue')
+  },
+  {
+      path: '/receivedDetail',
+      name: 'ReceivedDetail',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "about" */ '../views/ReceivedDetail.vue')
   }
 ]
 

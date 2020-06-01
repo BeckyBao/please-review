@@ -1,7 +1,7 @@
 <template>
     <div>
         <van-nav-bar
-                title="标题"
+                :title="detailTitle"
                 left-text="返回"
                 right-text="首页"
                 left-arrow
@@ -22,6 +22,7 @@
         name: "ListDetail",
         data() {
             return {
+                detailTitle: this.$route.params.detailTitle,
                 content: this.$route.params.content
             }
         },

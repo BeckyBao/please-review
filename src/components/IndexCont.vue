@@ -13,7 +13,7 @@
                     <van-icon name="chat" color="green" size="50"/>
                     <div style="font-size: 14px;">我的诉求</div>
                 </div>
-                <div class="editDiv">
+                <div class="editDiv" @click ="toReceived">
                     <van-icon name="invition" color="#1E74E6" size="50"/>
                     <div style="font-size: 14px;">收到的的诉求</div>
                 </div>
@@ -118,6 +118,13 @@
             },
             showMoreSystem() {
                 this.$router.push({name: 'ShowList', params: {searchList: this.systemlist}})
+            },
+            toReceived() {
+                axios.post('/received/getReceivedList', {
+                    tel: localStorage.getItem('tel')
+                }).then(res=>{
+                    this.$router.push({name: 'Received', params: {receivedList: res.data}});
+                });
             }
         },
     }
