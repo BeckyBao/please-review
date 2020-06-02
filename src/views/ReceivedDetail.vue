@@ -26,12 +26,50 @@
                 <van-button round type="info" @click="handleReply">解决回复</van-button>
             </van-cell-group>
             <van-cell-group style="margin-top:20px;">
-                <van-button round color="gray">反馈上级</van-button>
+                <van-button round color="gray" @click="feedbackReply">反馈上级</van-button>
             </van-cell-group>
         </div>
         <!--解决回复模块框-->
-        <van-dialog v-model="replyShow" title="解决回复" show-cancel-button>
-            <span>dfa</span>
+        <van-dialog v-model="replyShow" :showConfirmButton=false title="解决回复">
+            <van-form @submit="submitReply">
+                <van-field
+                        v-model="replyInfo.replyContent"
+                        rows="1"
+                        autosize
+                        label="答复意见："
+                        type="textarea"
+                        :rules="[{ required:true, message: '请输入答复意见' }]"
+                />
+                <div style="margin: 16px;">
+                    <van-button round block type="info" native-type="submit" >
+                        提交
+                    </van-button>
+                    <van-button round block type="default" @click="replyShow=false">
+                        取消
+                    </van-button>
+                </div>
+            </van-form>
+        </van-dialog>
+        <!--反馈上级模块框-->
+        <van-dialog v-model="feedbackShow" :showConfirmButton=false title="反馈上级">
+            <van-form @submit="submitFeedback">
+                <van-field
+                        v-model="feedbackInfo.feedbackContent"
+                        rows="1"
+                        autosize
+                        label="理由："
+                        type="textarea"
+                        :rules="[{ required:true, message: '请说明理由' }]"
+                />
+                <div style="margin: 16px;">
+                    <van-button round block type="info" native-type="submit" >
+                        提交
+                    </van-button>
+                    <van-button round block type="default" @click="feedbackShow=false">
+                        取消
+                    </van-button>
+                </div>
+            </van-form>
         </van-dialog>
     </div>
 </template>
@@ -40,12 +78,17 @@
     // 引入组件
     import Vue from 'vue';
     import axios from 'axios';
-    import { Image as VanImage, Col, Row, Dialog  } from 'vant';
+    import { Image as VanImage, Col, Row, NavBar, Dialog, Field, Form, Notify } from 'vant';
+    import deepClone from '../utils/clone.js'
 
     Vue.use(VanImage);
     Vue.use(Col);
     Vue.use(Row);
+    Vue.use(NavBar);
     Vue.use(Dialog);
+    Vue.use(Field);
+    Vue.use(Form);
+    Vue.use(Notify);
 
     export default {
         name: "ReceivedDetail",
@@ -53,7 +96,10 @@
             return {
                 item:  this.$route.params.item,
                 spanValue: '',
-                replyShow: false
+                replyShow: false,
+                replyInfo:[],
+                feedbackShow: false,
+                feedbackInfo:[]
             }
         },
         created(){
@@ -69,6 +115,36 @@
             },
             handleReply() {
                 this.replyShow = true;
+                this.replyInfo = deepClone(this.item);
+            },
+            submitReply() {
+                axios.post('/received/replyApply', {
+                    replyInfo:this.replyInfo
+                }).then(res=>{
+                    if(res.data.flag === 0) {
+                        this.$notify({ type: 'success', message: '提交成功' });
+                        this.replyShow = false;
+                    }else {
+                        this.$notify({ type: 'warning', message: '提交失败'+res.data.msg  });
+                    }
+                });
+            },
+            feedbackReply() {
+                this.feedbackShow = true;
+                this.feedbackInfo = deepClone(this.item);
+            },
+            submitFeedback() {
+                axios.post('/received/feedbackApply', {
+                    feedbackInfo:this.feedbackInfo
+                }).then(res=>{
+                    if(res.data.flag === 0) {
+                        this.$notify({ type: 'success', message: '提交成功' });
+                        this.feedbackShow = false;
+                    }else {
+                        this.$notify({ type: 'warning', message: '提交失败'+res.data.msg });
+                    }
+
+                });
             }
         }
     }

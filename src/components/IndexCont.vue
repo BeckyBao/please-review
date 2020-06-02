@@ -5,26 +5,26 @@
                 建行请你评
             </div>
             <div v-if="type === 'employee'" class="inDiv">
-                <div class="editDiv">
-                    <van-icon name="edit" color="blue" size="50"/>
+                <div class="editDiv" @click ="toForwardApply">
+                    <van-icon name="edit" color="blue" size="40"/>
                     <div style="font-size: 14px;">提出诉求</div>
                 </div>
-                <div class="editDiv">
-                    <van-icon name="chat" color="green" size="50"/>
+                <div class="editDiv" @click ="toMyApply">
+                    <van-icon name="chat" color="green" size="40" :info="myApplyAmount"/>
                     <div style="font-size: 14px;">我的诉求</div>
                 </div>
                 <div class="editDiv" @click ="toReceived">
-                    <van-icon name="invition" color="#1E74E6" size="50"/>
+                    <van-icon name="invition" color="#1E74E6" size="40" />
                     <div style="font-size: 14px;">收到的的诉求</div>
                 </div>
             </div>
             <div v-else-if="type === 'client'" class="inDiv">
-                <div class="editDiv2">
-                    <van-icon name="edit" color="blue" size="50"/>
+                <div class="editDiv2"  @click ="toForwardApply">
+                    <van-icon name="edit" color="blue" size="40"/>
                     <div style="font-size: 14px;">提出诉求</div>
                 </div>
-                <div class="editDiv2">
-                    <van-icon name="chat" color="green" size="50"/>
+                <div class="editDiv2" @click ="toMyApply">
+                    <van-icon name="chat" color="green" size="40"  :info="myApplyAmount"/>
                     <div style="font-size: 14px;">我的诉求</div>
                 </div>
             </div>
@@ -85,12 +85,14 @@
                 searchKeyValue: '',
                 answerlist: [],
                 systemlist:[],
-                activeNames: [1]
+                activeNames: [1],
+                myApplyAmount: ''
             }
         },
         async created() {
             await this.getAnswerlist();
             await this.getSystemlist();
+            await this.getApplyAmount();
         },
         methods: {
             getAnswerlist() {
@@ -113,12 +115,25 @@
                     }
                 })
             },
+            getApplyAmount() {
+                axios.post('/index/getApplyAmount', {
+                    tel: localStorage.getItem('tel')
+                }).then(res=>{
+                        this.myApplyAmount = res.data;
+                })
+            },
             showMoreAnswer() {
                 this.$router.push({name: 'ShowList', params: {searchList: this.answerlist}})
             },
             showMoreSystem() {
                 this.$router.push({name: 'ShowList', params: {searchList: this.systemlist}})
             },
+            toForwardApply() {
+                this.$router.replace({
+                    path:'/forwardApply'
+                })
+            },
+            toMyApply() {},
             toReceived() {
                 axios.post('/received/getReceivedList', {
                     tel: localStorage.getItem('tel')

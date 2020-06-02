@@ -43,7 +43,9 @@
         },
         methods: {
             onClickLeft() {
-                this.$router.back();
+                this.$router.replace({
+                    path:'/homeIndex'
+                })
             },
             toDetail(item) {
                 this.$router.push({name: 'ReceivedDetail', params: {item: item}})
