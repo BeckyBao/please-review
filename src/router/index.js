@@ -62,8 +62,25 @@ Vue.use(VueRouter)
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "about" */ '../views/ForwardApply.vue')
-  }
-]
+  },
+   {
+       path: '/myApply',
+       name: 'MyApply',
+       // route level code-splitting
+       // this generates a separate chunk (about.[hash].js) for this route
+       // which is lazy-loaded when the route is visited.
+       component: () => import(/* webpackChunkName: "about" */ '../views/MyApply.vue')
+   },
+   {
+       path: '/AlreadyDoDetail',
+       name: 'AlreadyDoDetail',
+       // route level code-splitting
+       // this generates a separate chunk (about.[hash].js) for this route
+       // which is lazy-loaded when the route is visited.
+       component: () => import(/* webpackChunkName: "about" */ '../views/AlreadyDoDetail.vue')
+   }
+
+  ]
 
 const router = new VueRouter({
   routes

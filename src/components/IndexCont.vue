@@ -133,7 +133,11 @@
                     path:'/forwardApply'
                 })
             },
-            toMyApply() {},
+            toMyApply() {
+                this.$router.replace({
+                    path:'/myApply'
+                })
+            },
             toReceived() {
                 axios.post('/received/getReceivedList', {
                     tel: localStorage.getItem('tel')

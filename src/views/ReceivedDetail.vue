@@ -34,7 +34,7 @@
             <van-form @submit="submitReply">
                 <van-field
                         v-model="replyInfo.replyContent"
-                        rows="1"
+                        rows="2"
                         autosize
                         label="答复意见："
                         type="textarea"
@@ -55,7 +55,7 @@
             <van-form @submit="submitFeedback">
                 <van-field
                         v-model="feedbackInfo.feedbackContent"
-                        rows="1"
+                        rows="2"
                         autosize
                         label="理由："
                         type="textarea"
