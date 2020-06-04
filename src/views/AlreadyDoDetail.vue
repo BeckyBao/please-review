@@ -95,7 +95,7 @@
     // 引入组件
     import Vue from 'vue';
     import axios from 'axios';
-    import { NavBar, Tag, Tabs, Field, Step, Steps, Cell, Form, Picker, Popup, Rate } from 'vant';
+    import { NavBar, Tag, Tabs, Field, Step, Steps, Cell, Form, Picker, Popup, Rate, Notify } from 'vant';
     Vue.use(NavBar);
     Vue.use(Tag );
     Vue.use(Tabs);
@@ -107,6 +107,7 @@
     Vue.use(Picker);
     Vue.use(Popup);
     Vue.use(Rate);
+    Vue.use(Notify);
 
     export default {
         name: "AlreadyDoDetail",
@@ -134,7 +135,7 @@
                 });
             },
             getTimelyColumns() {
-                axios.post('/myApply/getTimelyColumns', {
+                axios.post('/myApply/getTimelyType', {
                 }).then(res=>{
                     this.timelyColumns = res.data;
                 });
@@ -145,7 +146,7 @@
                 this.showTimelyPicker = false;
             },
             getSatisfyColumns() {
-                axios.post('/myApply/getSatisfyColumns', {
+                axios.post('/myApply/getSatisfyType', {
                 }).then(res=>{
                     this.satisfyColumns = res.data;
                 });
@@ -156,7 +157,15 @@
                 this.showSatisfyPicker = false;
             },
             onSubmit() {
-                console.log(this.alreadyData);
+                axios.post('/myApply/submitReply', {
+                    replyInfo:this.alreadyData
+                }).then(res=>{
+                    if(res.data.flag === 0) {
+                        this.$notify({ type: 'success', message: '提交成功' });
+                    }else {
+                        this.$notify({ type: 'warning', message: '提交失败'+res.data.msg  });
+                    }
+                });
             }
         }
     }

@@ -14,7 +14,7 @@
                 <van-field v-model="item.applyTime"  label="申请时间：" readonly />
                 <van-field label="问题图片：" />
                 <van-row>
-                    <van-col :span="spanValue" v-for="image in item.imageList">
+                    <van-col span="12" v-for="image in item.imageList">
                         <van-image
                                 fit="contain"
                                 :src="image.imgSrc"
@@ -95,7 +95,6 @@
         data() {
             return {
                 item:  this.$route.params.item,
-                spanValue: '',
                 replyShow: false,
                 replyInfo:[],
                 feedbackShow: false,
@@ -103,7 +102,6 @@
             }
         },
         created(){
-          this.spanValue = 24 / this.item.imageList.length;
         },
         methods: {
             onClickLeft() {

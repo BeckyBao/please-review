@@ -6,10 +6,10 @@
                 left-arrow
                 @click-left="onClickLeft"
         />
-        <div>
+        <div style="margin:10px 10px; padding-bottom:10px;">
             <van-cell-group v-for="item in receivedList"  :key="item.id" style="margin-top:20px;">
                 <van-field v-model="item.applyType" label="诉求类别：" readonly />
-                <van-field v-model="item.applyGoal" label="诉求目的：" type="textarea" utosize readonly />
+                <van-field v-model="item.applyGoal" label="诉求目的：" type="textarea" autosize readonly />
                 <van-field v-model="item.applyBy"  label="申请人：" readonly>
                     <template #button v-if="item.applyState === '待解决'">
                         <van-button size="small" plain color="red" @click = "toDetail(item)">{{item.applyState}}</van-button>
@@ -59,5 +59,6 @@
 <style scoped>
 .van-field{
     padding-bottom: 0;
+    background-color: #f9f9f9;
 }
 </style>

@@ -48,6 +48,7 @@ const alreadyDoList = [
 ];
 
 const alreadyDoDetail= {
+    "id": "12323",
     "applyGoal": "大话看电视呢啥的",
     "applyContent": "d是打发士大夫撒地方撒的地方e稍等哈胜多负少大开发好了记得是回复拉黑大V领不是代表什么的超级饿哦文件费",
     "replyContent": "打击违法绝对是发链接安徽的水立方；简单的萨克雷放假啦放假啊",
@@ -91,5 +92,7 @@ Mock.mock(`${domain}/forward/getReplyType`, 'post',typeColumns)
 Mock.mock(`${domain}/myApply/getMyWaitApply`, 'post',waitDoList)
 Mock.mock(`${domain}/myApply/getAlreadyDoList`, 'post',alreadyDoList)
 Mock.mock(`${domain}/myApply/getAlreadyDoDetail`, 'post',alreadyDoDetail)
-Mock.mock(`${domain}/myApply/getTimelyColumns`, 'post',timelyColumns)
-Mock.mock(`${domain}/myApply/getSatisfyColumns`, 'post',satisfyColumns)
+Mock.mock(`${domain}/myApply/getTimelyType`, 'post',timelyColumns)
+Mock.mock(`${domain}/myApply/getSatisfyType`, 'post',satisfyColumns)
+Mock.mock(`${domain}/forward/submitApply`, 'post',reply)
+Mock.mock(`${domain}/myApply/submitReply`, 'post',reply)

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div >
         <van-nav-bar
                 title="我的诉求"
                 left-text="返回"
@@ -8,18 +8,18 @@
         />
         <van-tabs v-model="activeName" @click="onClickTab">
             <van-tab title="处理中" name="waitDo">
-                <div v-for="item in waitDoList" :key="item.id" style="margin-bottom:20px;">
+                <div v-for="item in waitDoList" :key="item.id" style="margin:10px 10px; padding-bottom:10px;">
                     <van-field v-model="item.applyTime" readonly></van-field>
                     <van-field v-model="item.applyGoal" readonly></van-field>
-                    <van-field type="textarea" autosize v-model="item.applyContent" readonly></van-field>
+                    <van-field type="textarea" autosize v-model="item.applyContent" readonly style="padding-bottom:5px;"></van-field>
                     <van-field label="当前状态：" v-model="item.applyState" disabled></van-field>
                 </div>
             </van-tab>
             <van-tab title="已办结" name="alreadyDo">
-                <div v-for="item in alreadyDoList" :key="item.id" style="margin-bottom:20px;">
+                <div v-for="item in alreadyDoList" :key="item.id" style="margin:10px 10px; padding-bottom:10px;">
                     <van-field v-model="item.applyTime" readonly></van-field>
                     <van-field v-model="item.applyGoal" readonly></van-field>
-                    <van-field type="textarea" autosize v-model="item.applyContent" readonly></van-field>
+                    <van-field type="textarea" autosize v-model="item.applyContent" readonly style="padding-bottom:5px;"></van-field>
                     <van-field label="办理时间：" v-model="item.dealTime" disabled>
                         <template #button>
                             <van-button size="small" type="info" @click="handleView(item.id)">查看</van-button>
@@ -94,6 +94,7 @@
 
 <style scoped>
     .van-field{
+        background-color: #f9f9f9;
         padding-bottom: 0;
     }
 </style>

@@ -185,7 +185,8 @@
     .van-panel__header{
         padding: 5px;
     }
-    .van-cell{
+    .van-cell {
         border: 1px solid #D4D4D7;
+        background-color: #f9f9f9;
     }
 </style>

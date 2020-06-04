@@ -7,7 +7,7 @@
                 @click-left="onClickLeft"
         />
 
-        <van-form :mode="sumbitInfo" @submit="submit">
+        <van-form :mode="sumbitInfo" @submit="onSubmit">
             <van-field
                     readonly
                     clickable
@@ -156,9 +156,17 @@
                 this.sumbitInfo.applyTime = moment(value).format("YYYY-MM-DD");
                 this.showTimePicker = false;
             },
-            submit() {
+            onSubmit() {
                 this.sumbitInfo.imageList = this.fileList;
-                console.log(this.sumbitInfo);
+                axios.post('/forward/submitApply', {
+                    applyInfo:this.sumbitInfo
+                }).then(res=>{
+                    if(res.data.flag === 0) {
+                        this.$notify({ type: 'success', message: '提交成功' });
+                    }else {
+                        this.$notify({ type: 'warning', message: '提交失败'+res.data.msg  });
+                    }
+                });
             }
         }
     }
